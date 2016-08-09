@@ -2,7 +2,7 @@ require "minitest/autorun"
 
 class TestSimpleList_TDD < Minitest::Test
 	class Node
-		attr_reader :value, :previous_node, :next_node
+		attr_accessor :value, :previous_node, :next_node
 		def initialize(value = nil, previous_node = nil, next_node=  nil)
 			@value = value
 			@next_node = next_node
@@ -11,22 +11,42 @@ class TestSimpleList_TDD < Minitest::Test
 
 	end
 
-	class List
-
-		@node = Node.new(nil)
+	class List < Node
 
 		def add (value)
-			value
+			if @node then
+				nuevo = Node.new(value,@node)
+				@node.next_node = nuevo
+				@node = nuevo
+			else
+			 	@node = Node.new(value)
+			end
+			@node
 		end
 
 		def find (value)
-			value
+			point_first
+		    find_from_beginning(value)
+		    @node.value == value ? @node : nil
+					
 		end
 
 		def find_from_beginning(value)
+			if @node.value != value && @node.next_node != nil  then
+			 	@node = @node.next_node
+			 	find_from_beginning(value) 
+			 else
+			  	nil
+			end
 		end
 
 		def point_first
+			if @node.previous_node == nil then
+		        @node 
+		    else 
+	    	    @node = @node.previous_node
+		        point_first
+		    end 
 		end
 
 		def point_last
@@ -35,11 +55,11 @@ class TestSimpleList_TDD < Minitest::Test
 		def add_node_to_list(value)
 		end
 
-		def first_node(node)
+		def is_first_node(node)
 			node.previous_node ? false : true
 		end
 
-		def last_node(node)
+		def is_last_node(node)
 			node.next_node ? false : true
 		end
 
@@ -49,11 +69,16 @@ class TestSimpleList_TDD < Minitest::Test
 
 	describe List do 
 
-    it "Return node from find value" do
+    it "Return node from find or nil if is not at the list" do
       list = List.new
-      sended=list.add("Quinto")
-      returned_object = list.find("Quinto")
-      returned_object.must_equal(sended)
+      list.add('1')
+      list.add('2')
+      list.add('4')
+      sended=list.add("5")
+      list.add('3')
+      list.find("5").value.must_equal(sended.value)
+      list.find("6").must_equal(nil)
+    
     end
 
     it "create a Node and get the value" do
@@ -75,28 +100,47 @@ class TestSimpleList_TDD < Minitest::Test
     end
 
     it "Know if there is not previous node" do
-      list=List.new
+      list = List.new
       prev_node = Node.new(1)
       nex_node = Node.new(8)
       node = Node.new(2,prev_node,nex_node)
-      list.first_node(node).must_equal(false)
+      list.is_first_node(node).must_equal(false)
      
     end
 
      it "Know if there is not next node" do
-      list=List.new
+      list = List.new
       prev_node = Node.new(1)
       nex_node = Node.new(8)
       node = Node.new(2,prev_node,nex_node)
-      list.last_node(node).must_equal(false)
+      list.is_last_node(node).must_equal(false)
      
     end
-     it "" do
+
+     it "Return the previous and last Node added" do
+     	 list = List.new
+     	 fistro = list.add(5)
+     	 secustro = list.add(8)
+     	 fistro.next_node.must_equal(secustro)
+     	 secustro.previous_node.must_equal(fistro)
+     
+    end
+
+    it "" do
+     
+    end
+
+    it "" do
+     
+    end
+
+    it "" do
      
     end
 
      it "" do
      
     end
+
   end
 end
