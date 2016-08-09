@@ -74,8 +74,7 @@ class TestSimpleList < Minitest::Test
       list = List.new
       sended=list.add("Quinto")
       returned_object = list.find("Quinto")
-
-      expect(returned_object).to eq(sended)
+      returned_object.must_equal(sended)
     end
 
   end
