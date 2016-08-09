@@ -3,23 +3,22 @@ require "minitest/autorun"
 class TestSimpleList < Minitest::Test
 
   class Node 
-    def initialize(value)
-      @value = value
-      @next_node = nil
-      @previous_node = nil
-    end
+    
+    attr_accessor  :value
+    attr_accessor  :next_node
+    attr_accessor  :previous_node
 
-     def initialize(value, previous_node)
+    def initialize(value = nil, previous_node = nil, next_node = nil)
       @value = value
-      @next_node = nil
-      @previous_node = :previous_node
+      @next_node = next_node
+      @previous_node = previous_node
     end
 
   end
 
   class List
 
-    @node = nil
+    @node = Node.new(nil)
 
     def find(value)
       point_first
@@ -32,15 +31,26 @@ class TestSimpleList < Minitest::Test
     end
 
     def point_first
-      @node.previous_node == nil ? @node : point_first(@node.previous_node)
+      #@node.previous_node == nil ? @node : (point_first ,@node = @node.previous_node)
+      if @node.previous_node == nil then
+         @node 
+      else 
+        @node = @node.previous_node
+        point_first
+      end 
     end
 
     def point_last
-      @node.next_node == nil ? @node : point_last(@node.next_node)
+      if @node.next_node == nil then
+         @node 
+      else 
+        @node = @node.next_node
+        point_last
+      end 
     end
 
     def add(value)
-      firt_node? ? @node = Node.new(value) : add_node_to_list(value)     
+      firt_node(@node) ? @node = Node.new(value) : add_node_to_list(value)     
     end
 
     def add_node_to_list(value)
@@ -49,7 +59,7 @@ class TestSimpleList < Minitest::Test
       @node = @node.next_node
     end
 
-    def firt_node?(node)
+    def firt_node(node)
       point_first
       node == @node ? true : false
     end
@@ -58,21 +68,16 @@ class TestSimpleList < Minitest::Test
 
 # EMPEZAMOS LOS TEST
 
-  def create_a_list
-    @the_list = List.new
-    @the_list.add('Primero')
-    @the_list.add('Segundo')
-    @the_list.add('Tercero')
-    @the_list.add('Cuarto')
+  describe List do #copypasted
+
+    it "Return node from find value" do
+      list = List.new
+      sended=list.add("Quinto")
+      returned_object = list.find("Quinto")
+
+      expect(returned_object).to eq(sended)
+    end
+
   end
-
-
-
-  def find_recursive
-    assert_equal('Tercero',find('Tercero'))
-    assert_equal(nil ,find('Quinto'))
-  end
-
-  
 
 end
