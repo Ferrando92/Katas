@@ -56,12 +56,7 @@ class TestSimpleList_TDD < Minitest::Test
 		    end 
 		end
 
-		def point_last
-		end
-
-		def add_node_to_list(value)
-		end
-
+		
 		def is_first_node(node)
 			node.previous_node ? false : true
 		end
@@ -70,6 +65,15 @@ class TestSimpleList_TDD < Minitest::Test
 			node.next_node ? false : true
 		end
 
+		def delete_a_node(value)
+			@node = find(value) #probablemente sea una reiteracion
+			prev = @node.previous_node
+			nex = @node.next_node
+			@node.previous_node.next_node = nex
+			@node.next_node.previous_node = prev
+		end
+
+		
 	end
 
 
@@ -128,21 +132,17 @@ class TestSimpleList_TDD < Minitest::Test
 	     	 secustro.previous_node.must_equal(fistro)	     
 	    end
 
-	    it "" do
-	     
+	    it "Delete a node form list" do
+	      list = List.new
+	      list.add('1')
+	      list.add('2')
+	      list.add('4')
+	      sended=list.add("5")
+	      list.add('3')
+	      list.delete_a_node('5')
+	      list.find("5").must_equal(nil)	    
 	    end
 
-	    it "" do
-	     
-	    end
-
-	    it "" do
-	     
-	    end
-
-	     it "" do
-	     
-	    end
 
   	end
 end
