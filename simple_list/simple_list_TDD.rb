@@ -14,7 +14,8 @@ class TestSimpleList_TDD < Minitest::Test
 
 	class List < Node
 
-		def add (value)
+		def add (value) 
+			#Crea el 1 nodo o lo apila si ya existe nodo,
 			if @node 
 			then
 				nuevo = Node.new(value,@node)
@@ -27,8 +28,10 @@ class TestSimpleList_TDD < Minitest::Test
 		end
 
 		def find (value)
+			#senyala al primer nodo, para buscar de principio a final 
 			point_first
 		    find_from_beginning(value)
+		    #aqui llegamos si ha encontrado el valor o si se acaba la lista
 		    @node.value == value ? @node : nil
 					
 		end
