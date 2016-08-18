@@ -27,9 +27,9 @@ class TestPotter < Minitest::Test
     def self.group_books_by_id(books)
       books.each do |book_id|
         if !@groups_by_book[book_id] then
-        	@groups_by_book[book_id] = 1 
+          @groups_by_book[book_id] = 1 
         else 
-   	    	@groups_by_book[book_id] = @groups_by_book[book_id]+1	
+   	  @groups_by_book[book_id] = @groups_by_book[book_id]+1	
         end
       end
       @groups_by_book
@@ -37,17 +37,17 @@ class TestPotter < Minitest::Test
 
     def self.generate_basket
       while !@groups_by_book.empty?
-  	    number_of_books_in_collection = 0
-  	    @groups_by_book.each do |key, value|
-  	      if @groups_by_book[key] == 1 then
-  	        number_of_books_in_collection += 1
-  	  	    @groups_by_book.delete(key)
-  	      else
-  	  	    number_of_books_in_collection += 1
-  	  	    @groups_by_book[key] -= 1
-  	      end
-  	    end
-  	    @basket.push(number_of_books_in_collection)
+        number_of_books_in_collection = 0
+  	@groups_by_book.each do |key, value|
+  	  if @groups_by_book[key] == 1 then
+  	    number_of_books_in_collection += 1
+  	    @groups_by_book.delete(key)
+  	  else
+  	    number_of_books_in_collection += 1
+  	    @groups_by_book[key] -= 1
+  	  end
+        end
+        @basket.push(number_of_books_in_collection)
       end
       @basket
     end
@@ -74,12 +74,12 @@ class TestPotter < Minitest::Test
     end
 
     it 'Gave the collections and just have to apply the discounts ' do
-	  #assert_equal(8*2 + 8 * 2 * 0.95, Potter.apply_discounts)  
-	end  
+      #assert_equal(8*2 + 8 * 2 * 0.95, Potter.apply_discounts)  
+    end  
 
-	it 'Gave a bunch of books and get the price (full program)' do
-	  assert_equal(61.6 ,Potter.price([1,1,1,2,2,3,4,4,7]))
-	end	
+    it 'Gave a bunch of books and get the price (full program)' do
+      assert_equal(61.6 ,Potter.price([1,1,1,2,2,3,4,4,7]))
+    end	
   end
 end
 
