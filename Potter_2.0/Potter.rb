@@ -27,9 +27,9 @@ class TestPotter < Minitest::Test
     def self.group_books_by_id(books)
       books.each do |book_id|
         if !@groups_by_book[book_id] then
-          @groups_by_book[book_id] = 1 
+        	@groups_by_book[book_id] = 1 
         else 
-   	      @groups_by_book[book_id] = @groups_by_book[book_id]+1	
+   	    	@groups_by_book[book_id] = @groups_by_book[book_id]+1	
         end
       end
       @groups_by_book
