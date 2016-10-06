@@ -78,14 +78,14 @@ class Game
 
   def get_cells_alive_around(cell)
     number_of_cells_alive = 0
-    number_of_cells_alive =+ get_alive_cells_from_not_actual_row(cell.row-1, cell.column)
-    number_of_cells_alive =+ get_alive_cells_from_actual_row(cell.row, cell.column)
+    number_of_cells_alive += get_alive_cells_from_not_actual_row(cell.row - 1, cell.column)
+    number_of_cells_alive += get_alive_cells_from_actual_row(cell.row, cell.column)
     number_of_cells_alive
   end
 
   def get_alive_cells_from_not_actaul_row(row, column)
     cells_alive_in_this_row = 0
-    for column_iterator in column-1..column+1
+    (column - 1..column + 1).each do |column_iterator|
       if @board.positions[row][column_iterator].alive? 
         cells_alive_in_this_row += 1
       end 
@@ -93,14 +93,11 @@ class Game
     cells_alive_in_this_row
   end
 
-  def get_alive_cells_from_not_actaul_row(row, column)
+  def get_alive_cells_from_actaul_row(row, column)
     cells_alive_in_this_row = 0
-    if @board.positions[row][column-1].alive?
-      cells_alive_in_this_row += 1
-    end  
-    if @board.positions[row][column+1].alive?
-      cells_alive_in_this_row += 1
-    end
+    @board.positions[row][column - 1].alive? && cells_alive_in_this_row += 1
+    @board.positions[row][column + 1].alive? && cells_alive_in_this_row += 1
+    cells_alive_in_this_row
   end
 end
 
@@ -158,13 +155,13 @@ class TestGOL < Test::Unit::TestCase
 
   def second_innitial_test
     expected_board = Array.new(100, Array.new(100))
-    expected_board[39][60] = Cell.new(39,60)
-    expected_board[40][62] = Cell.new(40,62)
-    expected_board[41][59] = Cell.new(41,59)
-    expected_board[41][60] = Cell.new(41,60)
-    expected_board[41][63] = Cell.new(41,63)
-    expected_board[41][64] = Cell.new(41,64)
-    expected_board[41][65] = Cell.new(41,65)
+    expected_board[39][60] = Cell.new(39, 60)
+    expected_board[40][62] = Cell.new(40, 62)
+    expected_board[41][59] = Cell.new(41, 59)
+    expected_board[41][60] = Cell.new(41, 60)
+    expected_board[41][63] = Cell.new(41, 63)
+    expected_board[41][64] = Cell.new(41, 64)
+    expected_board[41][65] = Cell.new(41, 65)
     assert_equal(expected_board, @game.board.positions)
   end
 end
