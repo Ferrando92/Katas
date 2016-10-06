@@ -38,7 +38,7 @@ class BottlesSong
 
   def we_need_more_booze
     @song += "No more bottles of beer on the wall, no more bottles of beer. Go to the store and buy some more \n "
-  endGame_
+  end
 end
 
 class Test99Bottles < Test::Unit::TestCase
