@@ -2,5 +2,6 @@
 # A sample Gemfile
 source "https://rubygems.org"
 gem 'rubocop'
-gem 'gosu'
+#gem 'gosu'
+gem 'rspec'
 # gem "rails"
