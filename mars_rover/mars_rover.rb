@@ -24,11 +24,36 @@ class MarsRover
   end
 
   def move_forward
-    @actual_position_y += 1
+     take_one_step_forward if !is_at_the_edge?(:forward)
+     do_a_barrel_roll(:forward) if is_at_the_edge?(:forward)
   end
 
   def move_backward
+     take_one_step_backward if !is_at_the_edge?(:backward)
+     do_a_barrel_roll(:backward) if is_at_the_edge?(:backward)
+  end
+
+  def is_at_the_edge?(command)
+    if command == :forward
+      @actual_position_y == @plannet[@actual_position_x].length - 1
+    elsif command == :backward
+      @actual_position_y == 0
+    end
+  end
+
+  def take_one_step_forward
+    @actual_position_y += 1
+  end
+
+  def take_one_step_backward
     @actual_position_y -= 1
-    @actual_position_y = @plannet[@actual_position_x].length - 1
+  end
+
+  def do_a_barrel_roll(command) # Totally random name
+    if command == :forward
+      @actual_position_y = 0
+    elsif command == :backward
+      @actual_position_y = @plannet[@actual_position_x].length - 1
+    end
   end
 end
