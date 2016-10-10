@@ -1,4 +1,6 @@
 class MarsRover
+  TURNS_RIGHT_MAPPING = {:NORTH => :EAST , :EAST=> :SOUTH, :SOUTH=> :WEST, :WEST=> :NORTH}
+  TURNS_LEFT_MAPPING = {:NORTH => :WEST , :EAST=> :NORTH, :SOUTH=> :EAST, :WEST=> :SOUTH}
   def land(plannet, position, orientation)
     @plannet = plannet
     @actual_position_x = position[0]
@@ -18,42 +20,61 @@ class MarsRover
     @actual_orientation
   end
 
-  def receive_command(command)
-    move_forward if command == :F
-    move_backward if command == :B
+  def command(command_message)
+    move_forward if command_message == :F
+    move_backward if command_message == :B
+    turn_right if command_message == :R
+    turn_left if command_message == :L
   end
 
   def move_forward
-     take_one_step_forward if !is_at_the_edge?(:forward)
-     do_a_barrel_roll(:forward) if is_at_the_edge?(:forward)
+     take_one_step_forward if !is_at_the_edge?
+     do_a_barrel_roll if is_at_the_edge?
   end
 
   def move_backward
-     take_one_step_backward if !is_at_the_edge?(:backward)
-     do_a_barrel_roll(:backward) if is_at_the_edge?(:backward)
+    turn_right
+    turn_right
+    move_forward
   end
 
-  def is_at_the_edge?(command)
-    if command == :forward
+  def is_at_the_edge?# switch?
+    if @actual_orientation == :EAST
       @actual_position_y == @plannet[@actual_position_x].length - 1
-    elsif command == :backward
+    elsif @actual_orientation == :WEST
       @actual_position_y == 0
+    elsif @actual_orientation == :SOUTH
+      @actual_position_x == @plannet.length - 1
+    elsif @actual_orientation == :NORTH
+      @actual_position_x == 0
     end
   end
 
   def take_one_step_forward
-    @actual_position_y += 1
+    if @actual_orientation == :NORTH||:SOUTH
+      @actual_position_x += 1
+    elsif @actual_orientation == :WEST||:EAST
+      @actual_position_y += 1
+    end
   end
 
-  def take_one_step_backward
-    @actual_position_y -= 1
+  def turn_left
+    @actual_orientation = TURNS_LEFT_MAPPING[@actual_orientation]
   end
 
-  def do_a_barrel_roll(command) # Totally random name
-    if command == :forward
+  def turn_right
+    @actual_orientation = TURNS_RIGHT_MAPPING[@actual_orientation]
+  end
+
+  def do_a_barrel_roll # Totally random name, SWITCH?
+    if @actual_orientation == :EAST
       @actual_position_y = 0
-    elsif command == :backward
+    elsif @actual_orientation == :WEST
       @actual_position_y = @plannet[@actual_position_x].length - 1
+    elsif @actual_orientation == :SOUTH
+      @actual_position_x = 0
+    elsif @actual_orientation == :NORTH
+      @actual_position_x = @plannet.length - 1
     end
   end
 end
