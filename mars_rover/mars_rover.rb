@@ -51,9 +51,13 @@ class MarsRover
   end
 
   def take_one_step_forward
-    if @actual_orientation == :NORTH||:SOUTH
+    if @actual_orientation == :NORTH
       @actual_position_x += 1
-    elsif @actual_orientation == :WEST||:EAST
+    elsif @actual_orientation == :SOUTH
+      @actual_position_x += 1
+    elsif @actual_orientation == :WEST
+      @actual_position_y += 1
+    elsif @actual_orientation == :EAST
       @actual_position_y += 1
     end
   end
