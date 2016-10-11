@@ -1,27 +1,41 @@
 class LyricsComposer
-	attr_reader :number_bottles
-	
+
 	def initialize 
 		@number_bottles = 99
 	end
 
 	def current_verse
-		firts_string = "#{@number_bottles} bottles of beer on the wall, #{@number_bottles} bottles of beer.\n" 
-
-		second_string = "Take one down and pass it around, #{@number_bottles - 1} bottles of beer on the wall."
-
-		if @number_bottles == 2 
-			second_string = "Take one down and pass it around, #{@number_bottles - 1} bottle of beer on the wall."
-		elsif @number_bottles == 1 
-			firts_string = "#{@number_bottles} bottle of beer on the wall, #{@number_bottles} bottle of beer.\n"
-			second_string = "Take one down and pass it around, no more bottles of beer on the wall."
-		end
-
-		verse = firts_string + second_string
+		are_there_bottles? ? standar_verse : last_verse
 	end
 
 	def take_a_bottle
 		@number_bottles -= 1
+	end
+
+	def word_classifier(number_bottles)
+		number_bottles == 1 ? 'bottle' : 'bottles'
+	end
+
+	def bottles_count(number_bottles)
+		number_bottles == 0 ? 'no more' : number_bottles
+	end
+
+	def are_there_bottles?
+		@number_bottles != 0 
+	end
+
+	def standar_verse
+		firts_string = "#{@number_bottles} #{word_classifier(@number_bottles)} of beer on the wall, #{@number_bottles} #{word_classifier(@number_bottles)} of beer.\n" 
+		second_string = "Take one down and pass it around, #{bottles_count(@number_bottles -1)} #{word_classifier(@number_bottles - 1)} of beer on the wall."
+		verse = firts_string + second_string
+	end
+
+	def last_verse
+		verse = "No more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall."
+	end
+
+	def buy_99_bottles
+		@number_bottles = 99
 	end
 end
 
@@ -57,6 +71,17 @@ describe 'lyrics composer' do
 		end
 
 		message = "1 bottle of beer on the wall, 1 bottle of beer.\nTake one down and pass it around, no more bottles of beer on the wall."
+
+		expect(song.current_verse).to eq message
+	end
+
+	it '0 bottles' do
+		song = LyricsComposer.new
+		99.times do
+			song.take_a_bottle
+		end
+
+		message = "No more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall."
 
 		expect(song.current_verse).to eq message
 	end
