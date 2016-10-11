@@ -21,10 +21,12 @@ class MarsRover
   end
 
   def command(command_message)
-    move_forward if command_message == :F
-    move_backward if command_message == :B
-    turn_right if command_message == :R
-    turn_left if command_message == :L
+    move_forward if command_message == 'F'
+    move_backward if command_message == 'B'
+    turn_right if command_message == 'R'
+    turn_left if command_message == 'L'
+    broadcast_position if command_message == 'P'
+    broadcast_orientation if command_message == 'O'
   end
 
   def move_forward
@@ -82,3 +84,17 @@ class MarsRover
     end
   end
 end
+
+def main
+  @rover = MarsRover.new
+  @plannet = Array.new(50, Array.new(50))
+  @rover.land(@plannet, [0,0], :EAST)
+  @terminal = 'START'
+  until @terminal == "EXIT" do
+    puts 'Rover is online and waiting for comands'
+    @terminal = gets.to_s
+    puts @rover.command(@terminal)
+  end
+end
+main
+

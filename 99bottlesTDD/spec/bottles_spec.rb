@@ -1,6 +1,5 @@
 class LyricsComposer
-
-	def initialize 
+	def initialize
 		@number_bottles = 99
 	end
 
@@ -21,17 +20,19 @@ class LyricsComposer
 	end
 
 	def are_there_bottles?
-		@number_bottles != 0 
+		@number_bottles != 0
 	end
 
 	def standar_verse
-		firts_string = "#{@number_bottles} #{word_classifier(@number_bottles)} of beer on the wall, #{@number_bottles} #{word_classifier(@number_bottles)} of beer.\n" 
+		firts_string = "#{@number_bottles} #{word_classifier(@number_bottles)} of beer on the wall, #{@number_bottles} #{word_classifier(@number_bottles)} of beer.\n"
 		second_string = "Take one down and pass it around, #{bottles_count(@number_bottles -1)} #{word_classifier(@number_bottles - 1)} of beer on the wall."
-		verse = firts_string + second_string
+		firts_string + second_string
 	end
 
 	def last_verse
-		verse = "No more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall."
+		firts_string = "No more bottles of beer on the wall, no more bottles of beer.\n"
+		second_string = "Go to the store and buy some more, #{buy_99_bottles} #{word_classifier(@number_bottles)} of beer on the wall."
+		firts_string + second_string
 	end
 
 	def buy_99_bottles
@@ -57,33 +58,29 @@ describe 'lyrics composer' do
 	it 'when it has 2 bottles change the second_string of the current verse' do
 		song = LyricsComposer.new
 		97.times do
-			song.take_a_bottle
+		song.take_a_bottle
 		end
 
 		message = "2 bottles of beer on the wall, 2 bottles of beer.\nTake one down and pass it around, 1 bottle of beer on the wall."
-
 		expect(song.current_verse).to eq message
 	end
+
 	it 'when it has 1 bottles change the entire current verse' do
 		song = LyricsComposer.new
 		98.times do
-			song.take_a_bottle
+		song.take_a_bottle
 		end
 
 		message = "1 bottle of beer on the wall, 1 bottle of beer.\nTake one down and pass it around, no more bottles of beer on the wall."
-
 		expect(song.current_verse).to eq message
 	end
 
-	it '0 bottles' do
+	it '0 bottles case' do
 		song = LyricsComposer.new
 		99.times do
-			song.take_a_bottle
+		song.take_a_bottle
 		end
-
 		message = "No more bottles of beer on the wall, no more bottles of beer.\nGo to the store and buy some more, 99 bottles of beer on the wall."
-
 		expect(song.current_verse).to eq message
 	end
-
 end
