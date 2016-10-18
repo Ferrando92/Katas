@@ -56,7 +56,7 @@ class MarsRover
     end
   end
 
-  def take_one_step_forward
+  def take_one_step_forward1
     if @actual_orientation == :NORTH
       @actual_position[X_POSITION] += 1
     elsif @actual_orientation == :SOUTH
@@ -68,7 +68,7 @@ class MarsRover
     end
   end
 
-  def take_one_step_forward_refactored
+  def take_one_step_forward
      @actual_position[STEP_FORWARD_MAPPING[@actual_orientation]] += 1
   end
 
