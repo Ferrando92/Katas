@@ -85,6 +85,7 @@ class MarsRover
   def turn(side)
     @actual_orientation = side[@actual_orientation]
   end
+
   def do_a_barrel_roll # Totally random name, SWITCH?
     if @actual_orientation == :EAST
       @actual_position_y = 0
