@@ -8,12 +8,7 @@ class MarsRover
   LEFT = TURNS_LEFT_MAPPING
   def land(plannet, position, orientation)
     @plannet = plannet
-    # REFACTOR
-    # @actual_position[X_POSITION] = position[0]
-    # @actual_position[Y_POSITION] = position[1]
-
-    @actual_position_x = position[0]
-    @actual_position_y = position[1]
+    @actual_position= [position[0],position[1]]
     @actual_orientation = orientation
   end
 
@@ -22,8 +17,7 @@ class MarsRover
   end
 
   def obtain_actual_position
-    # [@actual_position[X_POSITION], @actual_position[Y]]
-    [@actual_position_x, @actual_position_y]
+    [@actual_position[X_POSITION], @actual_position[Y_POSITION]]
   end
 
   def broadcast_orientation
@@ -52,29 +46,25 @@ class MarsRover
 
   def at_the_edge?# switch?
     if @actual_orientation == :EAST
-      @actual_position_y == @plannet[@actual_position_x].length - 1
-      # @actual_position[Y_POSITION] == @plannet[@actual_position[X_POSITION]].length - 1
+      @actual_position[Y_POSITION] == @plannet[@actual_position[X_POSITION]].length - 1
     elsif @actual_orientation == :WEST
-      @actual_position_y.zero?
-      #  @actual_position[Y_POSITION] == 0
+      @actual_position[Y_POSITION].zero?
     elsif @actual_orientation == :SOUTH
-      @actual_position_x == @plannet.length - 1
-      # @actual_position[X_POSITION]== @plannet.length - 1
+      @actual_position[X_POSITION] == @plannet.length - 1
     elsif @actual_orientation == :NORTH
-      @actual_position_x.zero?
-      # @actual_position[X_POSITION] == 0
+      @actual_position[X_POSITION].zero?
     end
   end
 
   def take_one_step_forward
     if @actual_orientation == :NORTH
-      @actual_position_x += 1
+      @actual_position[X_POSITION] += 1
     elsif @actual_orientation == :SOUTH
-      @actual_position_x += 1
+      @actual_position[X_POSITION] += 1
     elsif @actual_orientation == :WEST
-      @actual_position_y += 1
+      @actual_position[Y_POSITION] += 1
     elsif @actual_orientation == :EAST
-      @actual_position_y += 1
+      @actual_position[Y_POSITION] += 1
     end
   end
 
@@ -88,13 +78,13 @@ class MarsRover
 
   def do_a_barrel_roll # Totally random name, SWITCH?
     if @actual_orientation == :EAST
-      @actual_position_y = 0
+      @actual_position[Y_POSITION] = 0
     elsif @actual_orientation == :WEST
-      @actual_position_y = @plannet[@actual_position_x].length - 1
+      @actual_position[Y_POSITION] = @plannet[@actual_position[X_POSITION]].length - 1
     elsif @actual_orientation == :SOUTH
-      @actual_position_x = 0
+      @actual_position[X_POSITION] = 0
     elsif @actual_orientation == :NORTH
-      @actual_position_x = @plannet.length - 1
+      @actual_position[X_POSITION] = @plannet.length - 1
     end
   end
 end
