@@ -1,3 +1,26 @@
+
+class Planet
+  attr_reader :number_of_rows
+  attr_reader :number_of_columns
+
+  def initialize(dimension_x, dimension_y)
+    @number_of_rows = dimension_x
+    @number_of_columns = dimension_y
+  end
+
+  def at_the_edge?(rover_position, rover_orientation)
+    if rover_orientation == :EAST
+      rover_position[1] == @number_of_columns - 1
+    elsif rover_orientation == :WEST
+      rover_position[1].zero?
+    elsif rover_orientation == :SOUTH
+      rover_position[0] == @number_of_rows - 1
+    elsif rover_orientation == :NORTH
+      rover_position[0].zero?
+    end
+  end
+end
+
 class MarsRover
   X_POSITION = 0
   Y_POSITION = 1
@@ -6,8 +29,8 @@ class MarsRover
   STEP_FORWARD_MAPPING = { NORTH: X_POSITION, EAST: Y_POSITION, SOUTH: X_POSITION, WEST: Y_POSITION }
   RIGHT = TURNS_RIGHT_MAPPING
   LEFT = TURNS_LEFT_MAPPING
-  def land(plannet, position, orientation)
-    @plannet = plannet
+  def land(planet, position, orientation)
+    @planet = planet
     @actual_position= [position[0],position[1]]
     @actual_orientation = orientation
   end
@@ -34,26 +57,14 @@ class MarsRover
   end
 
   def move_forward
-    take_one_step_forward unless at_the_edge?
-    do_a_barrel_roll if at_the_edge?
+    take_one_step_forward unless @planet.at_the_edge?(@actual_position, @actual_orientation)
+    do_a_barrel_roll if @planet.at_the_edge?(@actual_position, @actual_orientation)
   end
 
   def move_backward
     turn RIGHT
     turn RIGHT
     move_forward
-  end
-
-  def at_the_edge?# switch?
-    if @actual_orientation == :EAST
-      @actual_position[Y_POSITION] == @plannet[@actual_position[X_POSITION]].length - 1
-    elsif @actual_orientation == :WEST
-      @actual_position[Y_POSITION].zero?
-    elsif @actual_orientation == :SOUTH
-      @actual_position[X_POSITION] == @plannet.length - 1
-    elsif @actual_orientation == :NORTH
-      @actual_position[X_POSITION].zero?
-    end
   end
 
   def take_one_step_forward
@@ -68,11 +79,12 @@ class MarsRover
     if @actual_orientation == :EAST
       @actual_position[Y_POSITION] = 0
     elsif @actual_orientation == :WEST
-      @actual_position[Y_POSITION] = @plannet[@actual_position[X_POSITION]].length - 1
+      @actual_position[Y_POSITION] = @planet.number_of_columns - 1
     elsif @actual_orientation == :SOUTH
       @actual_position[X_POSITION] = 0
     elsif @actual_orientation == :NORTH
-      @actual_position[X_POSITION] = @plannet.length - 1
+      @actual_position[X_POSITION] = @planet.number_of_rows - 1
     end
   end
 end
+

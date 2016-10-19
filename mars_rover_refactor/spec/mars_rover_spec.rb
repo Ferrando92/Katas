@@ -9,8 +9,8 @@ describe MarsRover, '#first movements' do
 
   before :each do
     @mars_rover = MarsRover.new
-    @plannet = Array.new(LAST_SOUTH_POSITION_X + 1, Array.new(LAST_EAST_POSITION_Y + 1))
-    @mars_rover.land(@plannet, INNITIAL_POSITION, INNITIAL_ORIENTATION)
+    @planet = Planet.new(LAST_SOUTH_POSITION_X + 1, LAST_EAST_POSITION_Y + 1)
+    @mars_rover.land(@planet, INNITIAL_POSITION, INNITIAL_ORIENTATION)
   end
 
   context 'The rover just landed' do
