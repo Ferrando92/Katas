@@ -1,3 +1,13 @@
+class InformationMaps
+  TURNS_RIGHT_MAPPING = { NORTH: :EAST , EAST: :SOUTH, SOUTH: :WEST, WEST: :NORTH }
+  TURNS_LEFT_MAPPING = { NORTH: :WEST , EAST: :NORTH, SOUTH: :EAST, WEST: :SOUTH }
+  STEP_FORWARD_MAPPING = { NORTH: 0, EAST: 1, SOUTH: 0, WEST: 1 }
+end
+
+class InformationData
+  X_POSITION = 0
+  Y_POSITION = 1
+end
 
 class Planet
   attr_reader :number_of_rows
@@ -21,17 +31,17 @@ class Planet
   end
 end
 
+
 class MarsRover
-  X_POSITION = 0
-  Y_POSITION = 1
-  TURNS_RIGHT_MAPPING = { NORTH: :EAST , EAST: :SOUTH, SOUTH: :WEST, WEST: :NORTH }
-  TURNS_LEFT_MAPPING = { NORTH: :WEST , EAST: :NORTH, SOUTH: :EAST, WEST: :SOUTH }
-  STEP_FORWARD_MAPPING = { NORTH: X_POSITION, EAST: Y_POSITION, SOUTH: X_POSITION, WEST: Y_POSITION }
-  RIGHT = TURNS_RIGHT_MAPPING
-  LEFT = TURNS_LEFT_MAPPING
+  RIGHT = InformationMaps::TURNS_RIGHT_MAPPING
+  LEFT = InformationMaps::TURNS_LEFT_MAPPING
+  X_POSITION = InformationData::X_POSITION
+  Y_POSITION = InformationData::Y_POSITION
+  DIRECTION = InformationMaps::STEP_FORWARD_MAPPING
+
   def land(planet, position, orientation)
     @planet = planet
-    @actual_position= [position[0],position[1]]
+    @actual_position= [position[X_POSITION],position[Y_POSITION]]
     @actual_orientation = orientation
   end
 
@@ -68,14 +78,14 @@ class MarsRover
   end
 
   def take_one_step_forward
-     @actual_position[STEP_FORWARD_MAPPING[@actual_orientation]] += 1
+     @actual_position[DIRECTION[@actual_orientation]] += 1
   end
 
   def turn(side)
     @actual_orientation = side[@actual_orientation]
   end
 
-  def do_a_barrel_roll # Totally random name, SWITCH?
+  def do_a_barrel_roll # Totally random name
     if @actual_orientation == :EAST
       @actual_position[Y_POSITION] = 0
     elsif @actual_orientation == :WEST
