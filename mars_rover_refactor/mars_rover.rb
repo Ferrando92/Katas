@@ -20,13 +20,13 @@ class Planet
 
   def at_the_edge?(rover_position, rover_orientation)
     if rover_orientation == :EAST
-      rover_position[1] == @number_of_columns - 1
+      rover_position[InformationData::Y_POSITION] == @number_of_columns - 1
     elsif rover_orientation == :WEST
-      rover_position[1].zero?
+      rover_position[InformationData::Y_POSITION].zero?
     elsif rover_orientation == :SOUTH
-      rover_position[0] == @number_of_rows - 1
+      rover_position[InformationData::X_POSITION] == @number_of_rows - 1
     elsif rover_orientation == :NORTH
-      rover_position[0].zero?
+      rover_position[InformationData::X_POSITION].zero?
     end
   end
 end
