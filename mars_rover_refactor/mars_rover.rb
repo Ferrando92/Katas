@@ -97,4 +97,3 @@ class MarsRover
     end
   end
 end
-
