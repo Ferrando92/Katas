@@ -35,26 +35,26 @@ end
 class MarsRover
   RIGHT = InformationMaps::TURNS_RIGHT_MAPPING
   LEFT = InformationMaps::TURNS_LEFT_MAPPING
+  DIRECTION = InformationMaps::STEP_FORWARD_MAPPING
   X_POSITION = InformationData::X_POSITION
   Y_POSITION = InformationData::Y_POSITION
-  DIRECTION = InformationMaps::STEP_FORWARD_MAPPING
 
   def land(planet, position, orientation)
     @planet = planet
-    @actual_position= [position[X_POSITION],position[Y_POSITION]]
-    @actual_orientation = orientation
+    @current_position= [position[X_POSITION],position[Y_POSITION]]
+    @current_orientation = orientation
   end
 
   def broadcast_position
-    obtain_actual_position
+    obtain_current_position
   end
 
-  def obtain_actual_position
-    [@actual_position[X_POSITION], @actual_position[Y_POSITION]]
+  def obtain_current_position
+    [@current_position[X_POSITION], @current_position[Y_POSITION]]
   end
 
   def broadcast_orientation
-    @actual_orientation
+    @current_orientation
   end
 
   def recieve_command(command_message)
@@ -67,8 +67,8 @@ class MarsRover
   end
 
   def move_forward
-    take_one_step_forward unless @planet.at_the_edge?(@actual_position, @actual_orientation)
-    do_a_barrel_roll if @planet.at_the_edge?(@actual_position, @actual_orientation)
+    take_one_step_forward unless @planet.at_the_edge?(@current_position, @current_orientation)
+    do_a_barrel_roll if @planet.at_the_edge?(@current_position, @current_orientation)
   end
 
   def move_backward
@@ -78,22 +78,22 @@ class MarsRover
   end
 
   def take_one_step_forward
-     @actual_position[DIRECTION[@actual_orientation]] += 1
+     @current_position[DIRECTION[@current_orientation]] += 1
   end
 
   def turn(side)
-    @actual_orientation = side[@actual_orientation]
+    @current_orientation = side[@current_orientation]
   end
 
   def do_a_barrel_roll # Totally random name
-    if @actual_orientation == :EAST
-      @actual_position[Y_POSITION] = 0
-    elsif @actual_orientation == :WEST
-      @actual_position[Y_POSITION] = @planet.number_of_columns - 1
-    elsif @actual_orientation == :SOUTH
-      @actual_position[X_POSITION] = 0
-    elsif @actual_orientation == :NORTH
-      @actual_position[X_POSITION] = @planet.number_of_rows - 1
+    if @current_orientation == :EAST
+      @current_position[Y_POSITION] = 0
+    elsif @current_orientation == :WEST
+      @current_position[Y_POSITION] = @planet.number_of_columns - 1
+    elsif @current_orientation == :SOUTH
+      @current_position[X_POSITION] = 0
+    elsif @current_orientation == :NORTH
+      @current_position[X_POSITION] = @planet.number_of_rows - 1
     end
   end
 end
