@@ -1,4 +1,7 @@
+require 'colorize'
+
 def next_gen cells
+
 die = 0
 live = 1
 next_gen_cells = Array.new(cells.length) { Array.new(cells.length) }
@@ -7,17 +10,27 @@ next_gen_cells = Array.new(cells.length) { Array.new(cells.length) }
       must_live?(cells, row_i, column_i) ? apply_gen_rule(live, row_i, column_i, next_gen_cells) : apply_gen_rule(die, row_i, column_i, next_gen_cells)
     end
   end
-  puts next_gen_cells
+  print_gen(next_gen_cells)
   next_gen_cells
 end
 
+def print_gen(gen)
+  board = ''
+
+  colors = [" ◌".colorize(:light_black), " ●".colorize(:light_blue)]
+  gen.each do|row|
+    row.each {|cell| board += colors[cell]}
+    board += "\n"
+  end
+  puts board
+end
+
 def must_live? cells, cell_row, cell_column
-  alive_cells = number_of_cells_alive(cells, cell_row, cell_column)
-  #puts alive_cells
+  alive_cells = number_of_cells_around_refactor(cells, cell_row, cell_column)
   if(cells[cell_row][cell_column] == 0)
     alive_cells == 3
   else
-    (alive_cells < 4) && (alive_cells > 1) 
+    (alive_cells < 4) && (alive_cells > 1)
   end
 end
 
@@ -25,77 +38,35 @@ def number_of_cells_around_refactor cells, cell_row, cell_column
   alive_cells_around = 0
   (cell_row - 1).upto(cell_row + 1) do |i|
     if (i < cells.length && i >= 0)
-      alive_cells_around += check_row_columns(cells[i], cell_column)
+      is_the_current_cell_row = i == cell_row
+      alive_cells_around += check_row_columns(cells[i], cell_column, is_the_current_cell_row)
     end
   end
+  alive_cells_around
+
 end
 
-def check_row_columns columns, cell_column
+def check_row_columns columns, cell_column, is_the_current_cell_row
   alive_cells_row = 0
   (cell_column - 1).upto(cell_column + 1) do |i|
-    alive_cells_row += check_column(columns[i]) if (i < columns.length && i >=  0)
+    is_the_current_cell = i ==cell_column if is_the_current_cell_row
+    alive_cells_row += check_cell(columns[i]) if (i < columns.length && i >=  0 && !is_the_current_cell)
   end
   alive_cells_row
 end
 
-def check_column(cell)
-  cell == 1 ? 1 : 0
+def check_cell(cell)
+  cell
 end
 
 
-
-
-
-def number_of_cells_alive cells, cell_row, cell_column
-  alive_cells_around = 0
-  #puts cell_row
-  #puts cell_column
-  # SUPERIOR ROW
-  if((cell_row - 1) >= 0)
-    if((cell_column - 1) >=  0)
-      alive_cells_around += 1 if cells[cell_row - 1][cell_column - 1] == 1   
-      #puts cells[cell_row - 1][cell_column - 1] == 1
-    end
-  
-    alive_cells_around += 1 if cells[cell_row - 1][cell_column] == 1   
-    #puts cells[cell_row - 1][cell_column] == 1
-
-    if((cell_column + 1) < cells[0].length)
-      alive_cells_around += 1 if cells[cell_row - 1][cell_column + 1] == 1
-      #puts cells[cell_row - 1][cell_column + 1] == 1   
-    end
-  end
-  
-  # CELL_ROW
-  if((cell_column - 1) >=  0)
-    alive_cells_around += 1 if cells[cell_row][cell_column - 1] == 1
-    #puts cells[cell_row][cell_column - 1] == 1
-  end
-      
-  if((cell_column + 1) < cells[0].length)
-    alive_cells_around += 1 if cells[cell_row][cell_column + 1] == 1
-    #puts cells[cell_row][cell_column + 1] == 1   
-  end
-     
-  
-  # INFERIOR ROW
-  if((cell_row + 1) < cells.length)
-    if((cell_column - 1) >=  0)
-      alive_cells_around += 1 if cells[cell_row + 1][cell_column - 1] == 1
-    end
-  
-    alive_cells_around += 1 if cells[cell_row + 1][cell_column] == 1   
-  
-    if((cell_column + 1) < cells[0].length)
-      alive_cells_around += 1 if cells[cell_row + 1][cell_column + 1] == 1   
-    end
-  end
-  alive_cells_around
-end
 
 def apply_gen_rule rule, cell_row, cell_column, next_gen_cells
   next_gen_cells[cell_row][cell_column] = rule
 end
-next_gen(blinker = [[0,1,0],
+genesis = next_gen(blinker = [[0,1,0],
            [0,1,0],
            [0,1,0]])
+ 5.times do
+    genesis = next_gen(genesis)
+  end

@@ -31,7 +31,6 @@ class Planet
   end
 end
 
-
 class MarsRover
   RIGHT = InformationMaps::TURNS_RIGHT_MAPPING
   LEFT = InformationMaps::TURNS_LEFT_MAPPING
